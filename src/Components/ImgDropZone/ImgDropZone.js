@@ -1,26 +1,116 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react';
 import '../../assets/script/dragDrop'
-import fileSvg from '../../assets/images/file.svg'
 import ReactDOM from 'react-dom';
-// import Carousel from 'react-bootstrap/Carousel'
+import fileSvg from '../../assets/images/file.svg'
+import { useDropzone } from 'react-dropzone';
+import { toasterMsg } from "../Toaster/Toaster"
 
-const ImgDropZone = () => {
+
+// import styled from 'styled-components'
+const baseStyle = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    color: '#bdbdbd',
+    outline: 'none',
+    transition: 'border .24s ease-in-out'
+};
+
+const activeStyle = {
+    borderColor: '#2196f3'
+};
+
+const acceptStyle = {
+    borderColor: '#00e676'
+};
+
+const rejectStyle = {
+    borderColor: '#ff1744'
+};
+
+function nameLengthValidator(file) {
+    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+    const maxAllowedSize = 100 / 1024 * 1024 //100mb
+
+    if (sizeInMB > maxAllowedSize) {
+        toasterMsg(`File Size To Be Large ! ${sizeInMB} MB`, 'danger');
+        return true
+    }
+
+    return false
+}
+
+
+const ImgDropZone = (props) => {
+
+    const [selectedFile, setSelectedFile] = useState([])
+    const {
+        fileRejections,
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isDragAccept,
+        isDragReject
+    } = useDropzone({
+        validator: nameLengthValidator,
+        onDrop: acceptedFiles => {
+            if (nameLengthValidator) {
+                setSelectedFile(acceptedFiles.map(file => Object.assign(file, {
+                    file
+                })));
+            }
+        }
+    });
+
+    useEffect(() => {
+        console.log(selectedFile)
+    }, [selectedFile])
+
+    const style = useMemo(() => ({
+        ...baseStyle,
+        ...(isDragActive ? activeStyle : {}),
+        ...(isDragAccept ? acceptStyle : {}),
+        ...(isDragReject ? rejectStyle : {})
+    }), [
+        isDragActive,
+        isDragReject,
+        isDragAccept
+    ]);
+
+    const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+        <li key={file.path}>
+            {file.path} - {file.size} bytes
+            <ul>
+                {errors.map(e => (
+                    <li key={e.code}>{e.message}</li>
+                ))}
+            </ul>
+        </li>
+    ));
+
 
     return (
         <>
             <img src="./logo.png" alt="Inshare logo" className="logo" />
-            <div className="d-flex p-2">
+            <div className="d-flex p-2 main-container">
 
-                <section className="upload-container d-flex">
+                <section className="upload-container d-flex" >
                     <form action>
-                        <div className="drop-zone">
-                            <div className="icon-container">
+                        <div className={isDragAccept ? 'drop-zone container dragged' : 'drop-zone container '}>
+                            <div className="icon-container" {...getRootProps({ style })} >
                                 <img src={fileSvg} draggable="false" className="center" alt="File Icon" />
                                 <img src={fileSvg} draggable="false" className="left" alt="File Icon" />
                                 <img src={fileSvg} draggable="false" className="right" alt="File Icon" />
                             </div>
-                            <input type="file" id="fileInput" />
-                            <div className="title">Drop your Files here or, <span id="browseBtn">browse</span></div>
+                            <input type="file" id="fileInput" {...getInputProps()} />
+                            <p className="title">Drop your Files here or, <span id="browseBtn">browse</span></p>
                         </div>
                     </form>
                     <div className="progress-container">
@@ -58,12 +148,13 @@ const ImgDropZone = () => {
                     </div>
                 </section>
 
-              
 
-                    <div className="col-6">
+
+                <div className="col-6">
                     <div className="image-vector"></div>
 
-                        {/* <Carousel fade>
+
+                    {/* <Carousel fade>
                             <Carousel.Item>
                                 <img
                                     className="d-block w-100"
@@ -100,8 +191,8 @@ const ImgDropZone = () => {
                                 </Carousel.Caption>
                             </Carousel.Item>
                         </Carousel> */}
-                    </div>
-               
+                </div>
+
             </div>
             <div className="toast">Sample message</div>
             {/* github fork button */}
