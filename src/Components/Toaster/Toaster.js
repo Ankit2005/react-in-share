@@ -3,12 +3,11 @@ import "react-notifications-component/dist/theme.css";
 
 export const toasterMsg = (message, getVariant, duration, icon) => {
   stores.addNotification({
-    title: "Bombyx PLM",
     message: message,
     type: getVariant,
     insert: "bottom",
     container: "bottom-center",
-    animationIn: ["animated", "fadeIn"],
+    animationIn: ["animated", "bounceIn"],
     animationOut: ["animated", "fadeOut"],
     dismiss: {
       duration: 3000
