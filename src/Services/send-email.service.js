@@ -1,6 +1,7 @@
 import { toasterMsg } from "../Components/Toaster/Toaster"
 export const sendEmail = (formData) => {
-    const baseURL = "http://localhost:30001";
+    // const baseURL = "http://localhost:30001";
+    const baseURL = "https://inshare-file-share.herokuapp.com";
     const emailURL = `${baseURL}/api/files/send`;
 
     fetch(emailURL, {
