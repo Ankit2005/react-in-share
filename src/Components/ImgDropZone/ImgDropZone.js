@@ -1,4 +1,5 @@
 import React, { useRef, useMemo, useState } from 'react';
+// import './style.css'
 import '../../assets/script/dragDrop'
 //import ReactDOM from 'react-dom';
 import fileSvg from '../../assets/images/file.svg'
@@ -10,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { sendEmail } from '../../Services/send-email.service'
 //import ChipInput from 'material-ui-chip-input'
 import TextField from '@material-ui/core/TextField';
+
 //import { getMaxListeners } from 'process';
 
 // import styled from 'styled-components'
@@ -64,8 +66,8 @@ const ImgDropZone = (props) => {
     const [uploadedFileUrl, setUploadedFileUrl] = useState({ fileUrl: '' })
     const [emailChips, setEmailChips] = useState([])
     const ref = useRef();
-   // const baseURL = "http://localhost:30001";
-    const baseURL = "https://inshare-file-share.herokuapp.com";
+   const baseURL = "http://localhost:30001";
+    //const baseURL = "https://inshare-file-share.herokuapp.com";
     const uploadURL = `${baseURL}/api/files`;
 
     const {
@@ -172,7 +174,7 @@ const ImgDropZone = (props) => {
     return (
         <>
             {/* <img src="./logo.png" alt="Inshare logo" className="logo" /> */}
-            <div className="d-flex p-2 main-container">
+            <div className="d-flex px-5 main-container">
 
                 <section className="upload-container d-flex" >
                     <form action>
@@ -269,7 +271,7 @@ const ImgDropZone = (props) => {
 
 
                 <div className="col-6">
-                    <div className="image-vector"></div>
+                    {/* <div className="image-vector"></div> */}
 
                 </div>
 
