@@ -8,13 +8,9 @@ import greenTik from '../../assets/images/green-tik.png'
 import copyIcon from '../../assets/images/copy-icon.svg'
 import { useDropzone } from 'react-dropzone';
 import { toasterMsg } from "../Toaster/Toaster"
-import ProgressBar from 'react-bootstrap/ProgressBar'
 import { useForm } from "react-hook-form";
 import { sendEmail } from '../../Services/send-email.service'
-//import ChipInput from 'material-ui-chip-input'
-import TextField from '@material-ui/core/TextField';
 import { CircularProgressbar } from 'react-circular-progressbar';
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const baseStyle = {
@@ -64,7 +60,7 @@ function nameLengthValidator(file) {
 const FileDropzone = () => {
 
     //const [selectedFile, setSelectedFile] = useState([])
-    const [cardFlip, setCardFlip] = useState(true)
+    const [cardFlip, setCardFlip] = useState(false)
     const [showGringTik, setShowGringTik] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [showProgressBar, setShowProgressBar] = useState({ show: false, progress: 0 })
@@ -72,8 +68,8 @@ const FileDropzone = () => {
     const [uploadedFileUrl, setUploadedFileUrl] = useState({ fileUrl: '' })
     const [emailChips, setEmailChips] = useState([])
     const ref = useRef();
-    const baseURL = "http://localhost:30001";
-    //const baseURL = "https://inshare-file-share.herokuapp.com";
+    // const baseURL = "http://localhost:30001";
+    const baseURL = "https://inshare-file-share.herokuapp.com";
     const uploadURL = `${baseURL}/api/files`;
 
     const {
@@ -143,13 +139,12 @@ const FileDropzone = () => {
         toasterMsg('Copied to clipboard', 'default');
     }
 
-
     const onSubmit = async (data, e) => {
         console.log('chips after submit')
         console.log(emailChips)
         console.log('row form data')
         console.log(data)
-        //const form = e.target;
+
         const formData = {
             uuid: uploadedFileUrl.fileUrl.split("/").splice(-1, 1)[0],
             emailTo: data.emailTo,
@@ -159,11 +154,11 @@ const FileDropzone = () => {
         console.log(formData);
         sendEmail(formData);
         setEmailForm({ show: false })
+        e.target.reset();
         //form.reset();
-
     }
 
-    const getLink = () =>{
+    const getLink = () => {
         setCardFlip(true)
         setShowGringTik(false)
     }
@@ -183,21 +178,17 @@ const FileDropzone = () => {
         isDragAccept
     ]);
 
-
-
-
     return (
         <>
-
             <div className="section over-hide">
                 <div className="container">
                     <div className="row full-height justify-content-center">
-                        <div className="col-12 text-center align-self-center py-5">
+                        <div className="col-12 text-center align-self-center">
                             <div className="section text-center py-5 py-md-0">
 
                                 <input className="pricing" checked={cardFlip} type="checkbox" id="pricing" name="pricing" />
-                                <label htmlFor="pricing"><span className="block-diff">kayaking<span className="float-right">camping</span></span></label>
-                                <div className="card-3d-wrap mx-auto">
+                                {/* <label htmlFor="pricing"><span className="block-diff">kayaking<span className="float-right">camping</span></span></label> */}
+                                <div className="card-3d-wrap m-auto">
                                     <div className="card-3d-wrapper">
                                         {/* card-front side start */}
                                         <div className={isDragAccept ? 'card-front bg-light-blue' : 'card-front '}>
@@ -215,8 +206,8 @@ const FileDropzone = () => {
                                                         </div>
 
                                                         <p className="title">Drop your Files here or,
-                                                            <span id="browseBtn">browse <input type="file" id="fileInput" {...getInputProps()} /> </span></p>
-
+                                                            <span id="browseBtn">browse <input type="file" id="fileInput" {...getInputProps()} /> </span>
+                                                        </p>
                                                     </div>
                                                 </form>
 
@@ -244,38 +235,15 @@ const FileDropzone = () => {
                                                                 <a onClick={getLink} className="btn link mt-2">Get link</a>
                                                             </>
                                                         }
-
-
-
                                                     </div>
-
                                                 </>
-
-
-
-                                                {/* <p className="mb-4">per person</p> */}
-                                                {/* <p className="mb-1"><i className="uil uil-location-pin-alt size-22" /></p> */}
-                                                {/* <p className="mb-4">Drina, Serbia</p> */}
-                                                {/* <a href="#0" className="link">Choose Date</a> */}
-                                                {/* <div className="img-wrap img-2">
-                            <img src="https://assets.codepen.io/1462889/sea.png" alt />
-                          </div>
-                          <div className="img-wrap img-1">
-                            <img src="https://assets.codepen.io/1462889/kayak.png" alt />
-                          </div>
-                          <div className="img-wrap img-3">
-                            <img src="https://assets.codepen.io/1462889/water.png" alt />
-                          </div>
-                          <div className="img-wrap img-6">
-                            <img src="https://assets.codepen.io/1462889/Stone.png" alt />
-                          </div> */}
                                             </div>
                                         </div>
                                         {/* card-front side end */}
 
                                         <div className="card-back">
                                             <div className="pricing-wrap">
-                                                <h4 className="mb-3">Camping</h4>
+                                                <h2 className="mb-4 shareable">Shareable </h2>
                                                 <div className="px-3"><hr /></div>
                                                 {
                                                     emailForm.show &&
@@ -283,10 +251,17 @@ const FileDropzone = () => {
                                                         <div className="sharing-container">
                                                             <p className="expire">Link expires in 24 hrs</p>
                                                             <div className="input-container">
-                                                                <input ref={ref} type="text" value={uploadedFileUrl.fileUrl} id="fileURL" readOnly />
+                                                                <div className="form-group w-100">
+                                                                    <input
+                                                                        ref={ref} type="text"
+                                                                        value={uploadedFileUrl.fileUrl}
+                                                                        id="fileURL"
+                                                                        readOnly
+                                                                        className="form-control" />
+                                                                </div>
                                                                 <img src={copyIcon} onClick={() => { clickToCopy() }} id="copyURLBtn" alt="copy to clipboard icon" />
                                                             </div>
-                                                            <p className="email-info">Or Send via Email</p>
+                                                            <p className="email-info"> Or Send via Email </p>
                                                             <div className="email-container">
                                                                 <form onSubmit={handleSubmit(onSubmit)} id="emailForm">
                                                                     <div className="form-group w-100 mb-2">
@@ -309,7 +284,7 @@ const FileDropzone = () => {
                                                                     </div>
 
                                                                     <div className="w-100">
-                                                                        <button type="submit" className="btn btn-info link w-100 mt-1">Send</button>
+                                                                        <button type="submit" className="btn gradient-btn w-100 mt-1">Send </button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -320,9 +295,9 @@ const FileDropzone = () => {
                                                 {
                                                     true && <>
                                                         <div>
-                                                            <img className="w-100" src={sendMail} alt="send-email" />
+                                                            <img className="w-94" src={sendMail} alt="send-email" />
                                                             <div className="w-75 m-auto">
-                                                                <button  onClick={() => { setCardFlip(false) }} className="btn btn-info link w-100 mt-1">Send To Other</button>
+                                                                <button onClick={() => { setCardFlip(false) }} className="btn btn-info link w-100 mt-1">Send To Other</button>
                                                             </div>
                                                         </div>
                                                     </>
@@ -334,7 +309,6 @@ const FileDropzone = () => {
                                                 <p className="mb-4">Tara, Serbia</p>
                                                 <a href="#0" className="link">Choose Date</a> */}
                                                 {/* <div className="img-wrap img-2">
-                            <img src="https://assets.codepen.io/1462889/grass.png" alt />
                           </div>
                           <div className="img-wrap img-4">
                             <img src="https://assets.codepen.io/1462889/camp.png" alt />

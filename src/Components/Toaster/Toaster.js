@@ -5,8 +5,8 @@ export const toasterMsg = (message, getVariant, duration, icon) => {
   stores.addNotification({
     message: message,
     type: getVariant,
-    insert: "bottom",
-    container: "bottom-center",
+    insert: "center",
+    container: "top-center",
     animationIn: ["animated", "bounceIn"],
     animationOut: ["animated", "fadeOut"],
     dismiss: {
