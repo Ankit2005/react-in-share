@@ -15,10 +15,25 @@ body{
 	line-height: 1.7;
 	color: #102770;
   background-image: linear-gradient(
-    60deg
-    , #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
+      141deg
+       , #544af1de 0%, #4d34d2c2 62%, #3355ced6 100%, #49ef9fc7 100%), url('../../assets/images/bg-img.jpg');
 	overflow-x: hidden;
+  background-size: cover;
+  /* padding: 0px 45px; */
 }
+
+/* body {
+  background-image:
+  linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)),
+  url('../../assets/images/bg-img.jpg');
+  width: 80%;
+  height: 400px;
+  background-size: cover;
+  color: white;
+  padding: 20px;
+} */
+
+
 a {
 	cursor: pointer;
   transition: all 200ms linear;
@@ -193,7 +208,7 @@ a:hover {
  
  .sharing-container {
    margin-bottom: 25px;
-   width: var(--container-width);
+   /* width: var(--container-width); */
    border-radius: 10px;
  
  }
@@ -437,7 +452,7 @@ a:hover {
 
 .card-3d-wrap {
   position: relative;
-  width: 340px;
+  width: 370px;
   max-width: calc(100% - 20px);
   height: 510px;
   -webkit-transform-style: preserve-3d;
@@ -734,4 +749,13 @@ a:hover {
 	height: 26px;
 	width: auto;
 	display: block;
+}
+
+
+/* media queriers start */
+@media only screen and (min-width: 375px) {
+ body{
+  padding: 0px 45px;
+ }
+ 
 }

@@ -45,18 +45,6 @@ const acceptStyle = {
 //     borderColor: '#ff1744'
 // };
 
-function nameLengthValidator(file) {
-    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-    const maxAllowedSize = 100 / 1024 * 1024 //100mb
-    //const baseURL = "https://inshare-file-share.herokuapp.com";    
-
-    if (sizeInMB > maxAllowedSize) {
-        toasterMsg(`File Size To Be Large ! ${sizeInMB} MB`, 'danger');
-        return true
-    }
-
-    return false
-}
 const FileDropzone = () => {
 
     //const [selectedFile, setSelectedFile] = useState([])
@@ -67,6 +55,7 @@ const FileDropzone = () => {
     const [emailForm, setEmailForm] = useState({ show: false })
     const [uploadedFileUrl, setUploadedFileUrl] = useState({ fileUrl: '' })
     const [emailChips, setEmailChips] = useState([])
+    const [mailSendSuccess, setMailSendSuccess] = useState(false)
     const ref = useRef();
     // const baseURL = "http://localhost:30001";
     const baseURL = "https://inshare-file-share.herokuapp.com";
@@ -78,13 +67,14 @@ const FileDropzone = () => {
         isDragActive,
         isDragAccept,
     } = useDropzone({
+        onDrop: acceptedFiles => {        
+            const selectedFile = acceptedFiles.map(file => Object.assign(file, {
+                file
+            }));
+            const sizeInMB = (selectedFile[0].size / (1024 * 1024)).toFixed(2);
+            const maxAllowedSize = 100 / 1024 * 1024 //100mb
 
-        validator: nameLengthValidator,
-        onDrop: acceptedFiles => {
-            if (nameLengthValidator) {
-                const selectedFile = acceptedFiles.map(file => Object.assign(file, {
-                    file
-                }));
+            if (maxAllowedSize > sizeInMB) {
                 setShowProgressBar({ ...showProgressBar, show: true })
                 const formData = new FormData();
                 formData.append("myfile", selectedFile[0]);
@@ -93,10 +83,9 @@ const FileDropzone = () => {
 
                 // listen for upload progress
                 xhr.upload.onprogress = function (event) {
-                    // find the percentage of uploaded
+                    // find the percentage of uploaded          
+
                     let percent = Math.round((100 * event.loaded) / event.total);
-                    console.log('percent')
-                    console.log(percent)
                     setShowProgressBar({ show: true, progress: percent })
                     if (percent === 100) {
                         setShowGringTik(true)
@@ -123,6 +112,8 @@ const FileDropzone = () => {
 
                 xhr.open("POST", uploadURL);
                 xhr.send(formData);
+            } else {
+                toasterMsg(`File Size To Be Large ! ${sizeInMB} MB`, 'danger');
             }
         }
     });
@@ -154,6 +145,7 @@ const FileDropzone = () => {
         console.log(formData);
         sendEmail(formData);
         setEmailForm({ show: false })
+        setMailSendSuccess(true)
         e.target.reset();
         //form.reset();
     }
@@ -180,10 +172,10 @@ const FileDropzone = () => {
 
     return (
         <>
-            <div className="section over-hide">
-                <div className="container">
-                    <div className="row full-height justify-content-center">
-                        <div className="col-12 text-center align-self-center">
+            <div className="section ">
+                <div className="">
+                    <div className="row full-height justify-content-md-start justify-content-center ">
+                        <div className=" text-center align-self-center">
                             <div className="section text-center py-5 py-md-0">
 
                                 <input className="pricing" checked={cardFlip} type="checkbox" id="pricing" name="pricing" />
@@ -293,7 +285,7 @@ const FileDropzone = () => {
                                                 }
 
                                                 {
-                                                    true && <>
+                                                    mailSendSuccess && <>
                                                         <div>
                                                             <img className="w-94" src={sendMail} alt="send-email" />
                                                             <div className="w-75 m-auto">
