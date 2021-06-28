@@ -102,7 +102,10 @@ const FileDropzone = () => {
 
                 // listen for response which will give the link
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        console.log('xhr.readyState')
+                        console.log(xhr.readyState)
+                        console.log(xhr.responseText)
                         onFileUploadSuccess(xhr.responseText);
                         console.log('uploaded file url')
                         console.log(xhr.readyState)
@@ -112,6 +115,7 @@ const FileDropzone = () => {
 
                 xhr.open("POST", uploadURL);
                 xhr.send(formData);
+               
             } else {
                 toasterMsg(`File Size To Be Large ! ${sizeInMB} MB`, 'danger');
             }
@@ -119,7 +123,10 @@ const FileDropzone = () => {
     });
 
     const onFileUploadSuccess = (res) => {
+        console.log('error 122')
+        console.log(res)
         const { file } = JSON.parse(res);
+        console.log(file)
         setUploadedFileUrl({ fileUrl: file })
     };
 
