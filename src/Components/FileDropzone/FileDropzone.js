@@ -162,6 +162,11 @@ const FileDropzone = () => {
         setShowGringTik(false)
     }
 
+    const sendToOther = () =>{
+        setCardFlip(false)
+        setMailSendSuccess(false)
+    }
+
     // const handleChange = (chips) => {
     //     console.log('chips')
     //     console.log(chips)
@@ -296,7 +301,7 @@ const FileDropzone = () => {
                                                         <div>
                                                             <img className="w-94" src={sendMail} alt="send-email" />
                                                             <div className="w-75 m-auto">
-                                                                <button onClick={() => { setCardFlip(false) }} className="btn btn-info link w-100 mt-1">Send To Other</button>
+                                                                <button onClick={sendToOther} className="btn btn-info link w-100 mt-1">Send To Other</button>
                                                             </div>
                                                         </div>
                                                     </>
