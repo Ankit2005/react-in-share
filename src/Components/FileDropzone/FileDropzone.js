@@ -67,7 +67,7 @@ const FileDropzone = () => {
         isDragActive,
         isDragAccept,
     } = useDropzone({
-        onDrop: acceptedFiles => {        
+        onDrop: acceptedFiles => {
             const selectedFile = acceptedFiles.map(file => Object.assign(file, {
                 file
             }));
@@ -115,7 +115,7 @@ const FileDropzone = () => {
 
                 xhr.open("POST", uploadURL);
                 xhr.send(formData);
-               
+
             } else {
                 toasterMsg(`File Size To Be Large ! ${sizeInMB} MB`, 'danger');
             }
@@ -125,6 +125,7 @@ const FileDropzone = () => {
     const onFileUploadSuccess = (res) => {
         console.log('error 122')
         console.log(res)
+
         const { file } = JSON.parse(res);
         console.log(file)
         setUploadedFileUrl({ fileUrl: file })
@@ -132,9 +133,13 @@ const FileDropzone = () => {
 
 
     const clickToCopy = () => {
-        ref.current.select();
-        navigator.clipboard.writeText(uploadedFileUrl.fileUrl);
-        toasterMsg('Copied to clipboard', 'default');
+        if (navigator.clipboard && window.isSecureContext) {
+            // navigator clipboard api method'
+            ref.current.select();
+            navigator.clipboard.writeText(uploadedFileUrl.fileUrl);
+            toasterMsg('Copied to clipboard', 'default');
+        }
+
     }
 
     const onSubmit = async (data, e) => {
@@ -162,7 +167,7 @@ const FileDropzone = () => {
         setShowGringTik(false)
     }
 
-    const sendToOther = () =>{
+    const sendToOther = () => {
         setCardFlip(false)
         setMailSendSuccess(false)
     }
