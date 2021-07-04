@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { sendEmail } from '../../Services/send-email.service'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
+import Typing from 'react-typing-animation';
 const baseStyle = {
     flex: 1,
     display: 'flex',
@@ -191,7 +191,7 @@ const FileDropzone = () => {
         <>
             <div className="section ">
                 <div className="">
-                    <div className="row full-height justify-content-md-start justify-content-center ">
+                    <div className="d-md-flex full-height justify-content-md-start justify-content-center ">
                         <div className=" text-center align-self-center">
                             <div className="section text-center py-5 py-md-0">
 
@@ -312,27 +312,21 @@ const FileDropzone = () => {
                                                     </>
                                                 }
 
-                                                {/* <h2 className="mb-2"><sup>$</sup>29 / 8<sup>hrs</sup></h2>
-                                                <p className="mb-4">per person</p>
-                                                <p className="mb-1"><i className="uil uil-location-pin-alt size-22" /></p>
-                                                <p className="mb-4">Tara, Serbia</p>
-                                                <a href="#0" className="link">Choose Date</a> */}
-                                                {/* <div className="img-wrap img-2">
-                          </div>
-                          <div className="img-wrap img-4">
-                            <img src="https://assets.codepen.io/1462889/camp.png" alt />
-                          </div>
-                          <div className="img-wrap img-5">
-                            <img src="https://assets.codepen.io/1462889/Ivy.png" alt />
-                          </div>
-                          <div className="img-wrap img-7">
-                            <img src="https://assets.codepen.io/1462889/IvyRock.png" alt />
-                          </div> */}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+
+                        {/* typing animation */}
+                        <div className=" col-md-8 col-12 d-none d-flex align-items-center justify-content-center typing-txt">
+                            <Typing   speed={70} >
+                                <Typing.Speed ms={200} />
+                                Welcome To Shareable,
+                                Share Any Time To Any Where.
+                            </Typing>
                         </div>
                     </div>
                 </div>
